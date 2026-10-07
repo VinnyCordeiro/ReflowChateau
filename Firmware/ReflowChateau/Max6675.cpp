@@ -23,16 +23,22 @@ MAX6675::MAX6675(int8_t SCLK, int8_t CS, int8_t MISO) {
 /* Return the temperature in degrees celsius */
 float MAX6675::getTemperature(void){
   uint16_t v;
+  float lastTemp;
   digitalWriteFast(cs, LOW);
   v = spiRead();
   v <<= 8;
   v |= spiRead();
   digitalWriteFast(cs, HIGH);
   if (v & 0x4) {  
-    return 1000;  // there is no thermocouple attached
+    // No thermocouple attached / open circuit. Returning a fixed sentinel
+    // (previously 1000) fed bogus, wildly out-of-range values straight into
+    // the graph/PID math. Fall back to the last known-good reading instead,
+    // or 0 if we've never had a good reading yet.
+    return lastTemp;
   }
   v >>= 3;
-  return v*0.25;  // convert from raw to celsius
+  lastTemp = v*0.25;  // convert from raw to celsius
+  return lastTemp;
 }
 
 

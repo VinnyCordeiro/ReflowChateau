@@ -82,7 +82,7 @@ float Graph::floatMap(float x, float in_min, float in_max, float out_min, float 
 }
 
 
-float Graph::plotLine(float time, float temp){
+void Graph::plotLine(float time, float temp){
   if (lastTime != -1){
     ptr_tft->drawLine(lastTime/2, -lastTemp+320, time/2, -temp+320, ILI9341_RED);
   }

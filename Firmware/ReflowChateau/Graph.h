@@ -16,7 +16,7 @@ class Graph {
              float, ILI9341_t3*, Adafruit_FT6206*);
     void drawLines(void);
     float getSetpoint(float);
-    float plotLine(float, float);
+    void plotLine(float, float);
     void printValues(float, float);
     
   private:
